@@ -15,18 +15,8 @@ char key[SIZE_SSID];           //the current key
 //ssid table type - holds WIFI ssid's discoverd by scanning the network
 typedef struct {int index; char ssid[SIZE_SSID]; char key[SIZE_SSID];} ssid_table_type;
 
-//ssid table of scanned values
-#define SIZE_SSID_TABLE 25
-ssid_table_type ssid_table[SIZE_SSID_TABLE];       
-
-//ssid table of known values 
-#define SIZE_SSID_TABLE_KNOWN 4
-ssid_table_type ssid_table_known[SIZE_SSID_TABLE_KNOWN]{
-  0,  "Coakley",        "tgr13tgr",
-  1,  "Skybox2.4",      "tgr13tgr",
-  2,  "Will's iPhone 6","4ygi3mr7kc6vj",        // Personal Hotspot - THIS WORKS!
-  3,  "mHub_IoT",       "DHA6Jo8iPwS7pqfNrFHE"  //mHUB_IoT uses WPA2-PSK authentication with a fixed password
-};
+//SSID & PASSWORDS
+#include "secrets.h"
 
 int status_wifi = WL_IDLE_STATUS;              // the WiFi radio's status
 int wifi_attempts = 3;
