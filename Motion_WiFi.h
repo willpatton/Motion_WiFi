@@ -12,7 +12,11 @@
 #include <SPI.h>
 #include <WiFi101.h>
 
+ 
+#ifndef WIFI
 #define WIFI true  
+#endif
+
 #define SIZE_SSID 33 
 extern char ssid[SIZE_SSID]; 
 
@@ -39,8 +43,6 @@ private:
 
 
 };
-
-
 
 
 #endif

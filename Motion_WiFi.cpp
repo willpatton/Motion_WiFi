@@ -16,7 +16,24 @@ char key[SIZE_SSID];           //the current key
 typedef struct {int index; char ssid[SIZE_SSID]; char key[SIZE_SSID];} ssid_table_type;
 
 //SSID & PASSWORDS
-#include "secrets.h"
+//ssid table of scanned values
+#define SIZE_SSID_TABLE 25
+ssid_table_type ssid_table[SIZE_SSID_TABLE]; 
+
+
+//ssid table of known values 
+//UNCOMMENT
+#define WIFI_SECRETS  //comment this line for github
+#ifndef WIFI_SECRETS
+#define SIZE_SSID_TABLE_KNOWN 2
+ssid_table_type ssid_table_known[SIZE_SSID_TABLE_KNOWN]{
+  0,  "MySSID",       "password",
+  1,  "Xfinity",      "password"
+};
+#endif  
+#ifdef WIFI_SECRETS
+  #include "secrets.h"    //hidden .gitignore
+#endif
 
 int status_wifi = WL_IDLE_STATUS;              // the WiFi radio's status
 int wifi_attempts = 3;
@@ -53,7 +70,7 @@ void CWiFi::setup_wifi() {
   // scan for networks for additional SSIDs
   Serial.println("Scanning networks...");
   scanSSID();      //serial output of the network scan
-  //tftScanSSID();    //tft
+
 
   // attempt to connect to WiFi network:
   while (status_wifi != WL_CONNECTED) {
@@ -73,8 +90,6 @@ void CWiFi::setup_wifi() {
       break;
     }
   }
-  //tft.clr(); //clear TFT
-  //tft.setCursor(0,0);
 
 
   if(status_wifi == WL_CONNECTED){
@@ -249,8 +264,9 @@ void CWiFi::scanSSID() {
   Serial.print("Number of SSID's found: ");
   Serial.println(numSsid);
 
-  // SAVE to TABLE
-  // save the index number and name for each SSID found:
+  //SSID
+  //SAVE to TABLE
+  //save the index number and name for each SSID found:
   for (int i = 0; i < numSsid; i++) {
     ssid_table[i].index = i; 
     Serial.print(i); Serial.print(") ");
@@ -273,13 +289,14 @@ void CWiFi::scanSSID() {
     Serial.println();
   }
 
+  //DEBUG - display known hosts table and secrets
   Serial.println("SSID Table Known:");
   for(int i = 0; i< SIZE_SSID_TABLE_KNOWN; i++){
     Serial.print( ssid_table_known[i].index);
     Serial.print(") ");
     Serial.print(ssid_table_known[i].ssid);
     Serial.print("\t");
-    Serial.print(ssid_table_known[i].key);  
+    Serial.print(ssid_table_known[i].key);   //PASSWORD
     Serial.println();
   }
 
